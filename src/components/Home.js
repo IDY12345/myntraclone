@@ -1,9 +1,66 @@
 import Banner from "./Banner";
 import "../style/home.css";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import ProductCard from "./ProductCard";
 
-export default function Home() {
+const data1=[
+  {    
+  "id":31,
+  "title":"Dress",
+  "price":100,
+  "description":"This is a beautiful dress",
+  "images":["/image1.jpg","/image2.jpg"],
+  "discountPercentage":10,
+  "rating":5
+  },
+  {
+  "id":32,
+  "title":"Shirt",
+  "price":50,
+  "description":"This is a beautiful shirt",
+  "images":["/image5.webp","/image6.jpg"],
+  "discountPercentage":20,
+  "rating":4
+  },
+  {
+  "id":33,
+  "title":"Pants",
+  "price":70,
+  "description":"This is a beautiful pants",
+  "images":["/image9.jpeg","/image10.jpeg"],
+  "discountPercentage":30,
+  "rating":4
+  },
+  {
+  "id":34,
+  "title":"Shoes",
+  "price":120,
+  "description":"This is a beautiful shoes",
+  "images":["/image13.jpeg","/image14.jpeg"],
+  "discountPercentage":40,
+  "rating":5
+  },
+  {
+  "id":35,
+  "title":"Hat",
+  "price":30,
+  "description":"This is a beautiful hat",
+  "images":["/image17.jpeg","/image18.jpeg"],
+  "discountPercentage":50,
+  "rating":5
+  },
+  {
+  "id":36,
+  "title":"Socks",
+  "price":10,
+  "description":"This is a beautiful socks",
+  "images":["/image21.jpeg","/image22.jpeg"],
+  "discountPercentage":10,
+  "rating":4
+  }
+]
+
+export default function Home({setProductClicked,setSnapImage,setSnapId}) {
   const [Products, setProduct] = useState([]);
   useEffect(() => {
     fetch(`https://dummyjson.com/products`)
@@ -21,37 +78,17 @@ export default function Home() {
       <section className="container-fluid">
         <div className="row mb-5">
           {Products.map((data, index) => (
-            <div className="col-6 col-sm-3 mb-5" key={index}>
-             
-                <div className="card ProductCard rounded-0">
-                <Link to={`/product/${data.id}`} className="cardLink">
-                  <img
-                    src={data.images[0]}
-                    className="card-img-top"
-                    alt="..."
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title fs-6">{data.title}</h5>
-                    <div className="d-flex justify-content-between align-items-center">
-                        <span className="fs-6 fw-bold">Rs. {data.price}</span>
-                    <span className="text-danger fw-bold" style={{fontSize:'11px'}}>({data.discountPercentage} % OFF)</span>
-                    </div>
-                  </div>
-                  </Link>
-                  <div className="card-footer p-0 border-top-0">
-                    <Link
-                      to={"cart"}
-                      className="btn w-100 rounded-0 fw-semibold"
-                      style={{ backgroundColor: "#FF3F6C", color: "white" }}
-                    >
-                      Add to Bag
-                    </Link>
-                  </div>
-                </div>
-              
-            </div>
+            <ProductCard data={data} index={index} key={index} setProductClicked={setProductClicked} setSnapImage={setSnapImage} setSnapId={setSnapId} />
+            
           ))}
           ;
+        </div>
+        <div className="row mb-5">
+        {
+            data1.map((datas) => (
+              <ProductCard data={datas} index={datas.id} key={datas.id} setProductClicked={setProductClicked} setSnapImage={setSnapImage} setSnapId={setSnapId} />
+            ))
+          }
         </div>
       </section>
     </>

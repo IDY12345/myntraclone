@@ -1,6 +1,65 @@
 import "../style/product.css";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import ProductCard from "./ProductCard";
+
+
+const data1=[
+  {    
+  "id":"31",
+  "title":"Dress",
+  "price":100,
+  "description":"This is a beautiful dress",
+  "images":["/image1.jpg","/image2.jpg"],
+  "discountPercentage":10,
+  "rating":5
+  },
+  {
+  "id":"32",
+  "title":"Shirt",
+  "price":50,
+  "description":"This is a beautiful shirt",
+  "images":["/image5.webp","/image6.jpg"],
+  "discountPercentage":20,
+  "rating":4
+  },
+  {
+  "id":"33",
+  "title":"Pants",
+  "price":70,
+  "description":"This is a beautiful pants",
+  "images":["/image9.jpeg","/image10.jpeg"],
+  "discountPercentage":30,
+  "rating":4
+  },
+  {
+  "id":"34",
+  "title":"Shoes",
+  "price":120,
+  "description":"This is a beautiful shoes",
+  "images":["/image13.jpeg","/image14.jpeg"],
+  "discountPercentage":40,
+  "rating":5
+  },
+  {
+  "id":"35",
+  "title":"Hat",
+  "price":30,
+  "description":"This is a beautiful hat",
+  "images":["/image17.jpeg","/image18.jpeg"],
+  "discountPercentage":50,
+  "rating":5
+  },
+  {
+  "id":"36",
+  "title":"Socks",
+  "price":10,
+  "description":"This is a beautiful socks",
+  "images":["/image21.jpeg","/image22.jpeg"],
+  "discountPercentage":10,
+  "rating":4
+  }
+]
 
 function Product() {
   const [Product, setProduct] = useState([]);
@@ -8,6 +67,7 @@ function Product() {
   const { id } = params;
   //   console.log(id)
   useEffect(() => {
+    if(id<=30){
     fetch(`https://dummyjson.com/products/${id}`)
       .then((response) => response.json())
       .then((data) => {
@@ -15,7 +75,25 @@ function Product() {
         // console.log(data);
       })
       .catch((error) => console.log(error));
+    }
+    else if(id>30)
+    {
+      const data=data1.find((data)=>data.id===id);
+      setProduct(data);
+    }
+
+
   }, [id]);
+
+  const [Products, setProducts] = useState([]);
+  useEffect(() => {
+    fetch(`https://dummyjson.com/products`)
+      .then((response) => response.json())
+      .then((data) => {
+        setProducts(data.products);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const [showElement, setShowElement] = useState(false);
   useEffect(() => {
@@ -35,9 +113,12 @@ function Product() {
                 <div className="col-sm-6">
                   <img src={Product.images[0]} alt="img" className="me-2 w-100" />
                 </div>
+                {Product.images[1] ? 
+                (                
                 <div className="col-sm-6">
                   <img src={Product.images[1]} alt="" className="w-100" />
-                </div>
+                </div>):(<> </>)}
+
               </div>
             ) : (
               <div></div>
@@ -45,7 +126,13 @@ function Product() {
           </div>
           <div className="col-12 col-sm-6 p-5">
             <div className="border-bottom border-2 pb-4">
+              <div className="d-flex flex-row">
               <h4>{Product.title}</h4>
+              &nbsp;
+              <button className="rounded bg-white">
+                <a href="https://idy12345-tryon-app-h5yjcs.streamlit.app/" className="text-orange-200" target="_blank">Try-on</a>
+              </button>
+              </div>
               <p className="pb-2 text-secondary font-monospace">
                 {Product.description}
               </p>
@@ -84,6 +171,14 @@ function Product() {
             </div>
           </div>
         </div>
+      </section>
+      <section className="container-fluid">
+      <div className="row mb-5">
+      {Products.map((data, index) => (
+            <ProductCard data={data} index={index} key={index} setProductClicked={false} setSnapImage={""} setSnapId={0}/>
+            
+          ))}
+      </div>
       </section>
     </>
   );

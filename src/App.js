@@ -8,6 +8,8 @@ import Home from "./components/Home";
 import User from "./components/User";
 import Product from "./components/Product";
 import { useState } from "react";
+import MovableButton from "./components/MovableButton";
+
 
 function PrivateRoute({ loggedIn, children }) {
   if (loggedIn) {
@@ -18,6 +20,11 @@ function PrivateRoute({ loggedIn, children }) {
 }
 
 function App() {
+
+  const [productClicked, setProductClicked] = useState(false);
+  const [snapImage, setSnapImage] = useState("");
+  const [snapId, setSnapId] = useState("")
+
   const styles = {
     sectionMargin: {
       marginTop: "5rem",
@@ -28,8 +35,9 @@ function App() {
     <div>
       <Header />
       <div style={styles.sectionMargin}>
+      {productClicked?<MovableButton snapImage={snapImage} snapId={snapId}/>:<></>}
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home setProductClicked={setProductClicked} setSnapImage={setSnapImage} setSnapId={setSnapId} />} />
           {/* <Route path='/checkout' element={<Checkout />} /> */}
           <Route path="/cart" element={<Cart />} />
           <Route path="/signin" element={<User setLoggedIn={setLoggedIn} />} />
@@ -43,6 +51,7 @@ function App() {
           />
           <Route path="/product/:id" element={<Product />} />
         </Routes>
+
       </div>
     </div>
   );
